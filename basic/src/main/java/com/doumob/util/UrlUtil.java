@@ -73,7 +73,7 @@ public class UrlUtil {
 	 */
 	public static String getEpTokenUrl(String corpId,String secret){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=")
+		sb.append("https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=")
 		.append(corpId).append("&corpsecret=")
 		.append(secret);
 		return sb.toString();

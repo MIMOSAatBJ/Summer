@@ -5,7 +5,7 @@
 	<display-name>demander</display-name>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-		<listener-class>com.doumob.start.ApplicationStartUpListener</listener-class>
+		<listener-class>com.doumob.pro.listener.ApplicationStartUpListener</listener-class>
 	</listener>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>

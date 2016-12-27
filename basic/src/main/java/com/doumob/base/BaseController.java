@@ -1,6 +1,7 @@
 package com.doumob.base;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -20,6 +21,7 @@ public class BaseController {
 	private Logger logger=Logger.getLogger(getClass());
 	protected final Gson gson=new Gson();
 	protected final String success="success";
+	protected final String default_charset="UTF-8";
 	/**
 	 * @DESC 从request对象中获取参数，返回参数一定不会为null
 	 * @param request
@@ -36,9 +38,7 @@ public class BaseController {
 			String value=request.getParameter(key);
 			parms.put(key, value);
 		}
-		if(logger.isDebugEnabled()){
-			logger.debug("received parms:"+parms);
-		}
+		logger.debug("received parms:"+parms);
 		return parms;
 	}
 	
@@ -53,7 +53,7 @@ public class BaseController {
 	protected Map<String, String> getparmMapAfterEncode(HttpServletRequest request){
 		Map<String, String>  map=null;
 		try {
-			String qs=URLDecoder.decode(request.getQueryString(), "UTF-8");
+			String qs=URLDecoder.decode(request.getQueryString(),default_charset);
 			map=parse(qs);
 			logger.debug("parsed parms:"+map);
 		} catch (UnsupportedEncodingException e) {
@@ -80,6 +80,26 @@ public class BaseController {
 			}
 		}
 		return map;
+	}
+	
+	/**
+	 * @DESC 从inputstream流中读取参数信息
+	 * @param request
+	 * @param t
+	 * @return
+	 * @author zhangH
+	 * @date 2016年12月13日
+	 * @version
+	 */
+	protected <T> T getparmFromStream(HttpServletRequest request,Class<T> t){
+		T result=null;
+		try {
+			InputStreamReader reader=new InputStreamReader(request.getInputStream(),default_charset);
+			result=  (T) gson.fromJson(reader, t);
+		} catch (Exception e) {
+			logger.error(e.getClass()+":"+e.getMessage());
+		}
+		return result;
 	}
 	/**
 	 * @DESC 通过response的writer写出内容，而非json格式

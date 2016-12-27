@@ -1,12 +1,17 @@
 package com.doumob.wx.pojo;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * 企业号员工
  * @author killer
  *
  */
 public class QyhEmp {
+	
+	@Expose
 	private String errcode;//	返回码
+	@Expose
 	private String errmsg;// 	对返回码的文本描述内容
 	private String userid;// 	成员UserID。对应管理端的帐号
 	private String name;// 	成员名称
@@ -18,6 +23,7 @@ public class QyhEmp {
 	private String weixinid;// 	微信号
 	private String avatar;// 	头像url。注：如果要获取小图将url最后的"/0"改成"/64"即可
 	private String status;// 	关注状态: 1=已关注，2=已禁用，4=未关注
+	private Integer state; //服务状态，自加字段非微信字段
 //	private String extattr;
 	/* 什么破数据定义，我发誓不用这东西
 	"extattr": {"attrs":[{"name":"爱好","value":"旅游"},{"name":"卡号","value":"1234567234"}]}
@@ -95,4 +101,11 @@ public class QyhEmp {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public Integer getState() {
+		return state;
+	}
+	public void setState(Integer state) {
+		this.state = state;
+	}
+	
 }

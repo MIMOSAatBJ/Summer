@@ -2,9 +2,11 @@ package com.doumob.runtime;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -15,7 +17,9 @@ public class Config {
 	private static Properties prop = new Properties();
 	private static List<String> configList = new ArrayList<String>();
 	static {
+		configList.add("/common.properties");
 		configList.add("/config.properties");
+		load("/common.properties");
 		load("/config.properties");
 	}
 	
@@ -142,15 +146,5 @@ public class Config {
 	public static String getEncoding() {
 		return getValue("encoding");
 	}
-
-	public static void main(String[] args) {
-		System.out.println(getValue("configurator", "UTF-8"));
-		System.out.println(getValue("log4j.rootLogger"));
-		mergeConfig("/log4j.properties");
-		System.out.println(getValue("log4j.rootLogger"));
-		String s=new String("/log4j.properties");
-		reLoad(s);
-		System.out.println(getValue("log4j.rootLogger"));
-		System.out.println(getValue("configurator", "UTF-8"));
-	}
+	
 }

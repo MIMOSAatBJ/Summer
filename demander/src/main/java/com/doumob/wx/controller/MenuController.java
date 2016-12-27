@@ -15,17 +15,22 @@ import com.doumob.http.SimpleHTTP;
 import com.doumob.util.DateUtil;
 import com.doumob.util.UrlUtil;
 import com.doumob.wx.pojo.Credential;
+import com.doumob.wx.service.DispatchService;
 import com.doumob.wx.service.WxCredentialService;
 
 @RequestMapping("menu")
 public class MenuController extends BaseController {
-	
+
 	@Autowired
 	private WxCredentialService cdService;
-	
-	private String cookie_key="wx_1yLrvFn9OBWSqVY6_chat";
-	
-	private Logger logger=Logger.getLogger(getClass());
+
+	@Autowired
+	private DispatchService dispatchService;
+
+	private String cookie_key = "wx_1yLrvFn9OBWSqVY6_chat";
+
+	private Logger logger = Logger.getLogger(getClass());
+
 	/**
 	 * @DESC 开始微信授权
 	 * @param request
@@ -37,23 +42,22 @@ public class MenuController extends BaseController {
 	 * @version
 	 */
 	@RequestMapping("step1")
-	public String auth(HttpServletRequest request,
-			HttpServletResponse response) throws Exception{
+	public String auth(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Cookie cookie = getCookie(request, cookie_key);
-		if(cookie!=null){
-			Credential c=new Credential();
+		if (cookie != null) {
+			Credential c = new Credential();
 			c.setOpenid(cookie.getValue());
 			c = cdService.findCredential(c);
-			if(c!=null&&DateUtil.getOffMills(c.getTimestamp(), 
-					DateUtil.getLongDate())<Integer.valueOf(c.getExpires_in())){
+			if (c != null && DateUtil.getOffMills(c.getTimestamp(), DateUtil.getLongDate()) < Integer
+					.valueOf(c.getExpires_in())) {
 				request.setAttribute("openid", cookie.getValue());
-				request.setAttribute("url",UrlUtil.basepath);
+				request.setAttribute("url", UrlUtil.basepath);
 				return "menu/prepare";
 			}
 		}
-		return  "redirect:"+UrlUtil.getAuthUrl();
+		return "redirect:" + UrlUtil.getAuthUrl();
 	}
-	
+
 	/**
 	 * @DESC 授权第二步，获取accessToken
 	 * @param request
@@ -64,30 +68,30 @@ public class MenuController extends BaseController {
 	 * @version
 	 */
 	@RequestMapping("step2")
-	public String prepare(HttpServletRequest request,
-			HttpServletResponse response){
-		Map<String, String> parms=getparmMap(request);
-		Credential credential=null;
+	public String prepare(HttpServletRequest request, HttpServletResponse response) {
+		Map<String, String> parms = getparmMap(request);
+		Credential credential = null;
 		Cookie cookie = getCookie(request, cookie_key);
-		if(cookie!=null){
-			credential=cdService.getByRefresh(cookie.getValue());
+		if (cookie != null) {
+			credential = cdService.getByRefresh(cookie.getValue());
 			logger.debug("新的token己获取。");
-		}if(credential==null){
-			credential = SimpleHTTP.post(UrlUtil.getCdUrl(parms.get("code")), null,Credential.class);
-			logger.debug("首次获取token。"+credential.toJson());
 		}
-		if(credential!=null){
+		if (credential == null) {
+			credential = SimpleHTTP.post(UrlUtil.getCdUrl(parms.get("code")), null, Credential.class);
+			logger.debug("首次获取token。" + credential.toJson());
+		}
+		if (credential != null) {
 			credential.setTimestamp(DateUtil.getLongDate());
-			Credential query=new Credential();
+			Credential query = new Credential();
 			query.setOpenid(credential.getOpenid());
 			cdService.findAndUpdate(query, credential);
-			response.addCookie(createCookie(cookie_key, credential.getOpenid(), 90*24*60*60));
+			response.addCookie(createCookie(cookie_key, credential.getOpenid(), 90 * 24 * 60 * 60));
 			request.setAttribute("openid", credential.getOpenid());
-			request.setAttribute("url",UrlUtil.basepath);
+			request.setAttribute("url", UrlUtil.basepath);
 		}
 		return "menu/prepare";
 	}
-	
+
 	/**
 	 * @DESC 接收到匹配的需求，开始匹配
 	 * @param request
@@ -98,21 +102,16 @@ public class MenuController extends BaseController {
 	 * @version
 	 */
 	@RequestMapping("start")
-	public void start(HttpServletRequest request,HttpServletResponse response){
-		String parm=request.getQueryString();
-		Credential c=new Credential();
+	public void start(HttpServletRequest request, HttpServletResponse response) {
+		String parm = request.getQueryString();
+		Credential c = new Credential();
 		c.setOpenid(parm);
 		c = cdService.findCredential(c);
 		logger.debug(c.toJson());
-		if(parm!=null&&c!=null){
-			//保存需要匹配的对象,并能通知服务方
-//			if(!Pool.demander.containsKey(c.getOpenid())){
-//				Pool.demander.put(c.getOpenid(), c);
-//				outService.notifyAll(SystemTip.neworder.getTip());
-//				outService.send(PbServerMessage.createTextMessage(c.getOpenid(), "text", "text", SystemTip.start.getTip()));
-//			}
+		if (parm != null && c != null) {
+			dispatchService.register(c);
 			write(response, "ok");
-		}else{
+		} else {
 			logger.debug("服务器异常，请求失败");
 			write(response, "服务器异常，请重新请求");
 		}

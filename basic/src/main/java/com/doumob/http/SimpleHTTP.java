@@ -59,6 +59,8 @@ public class SimpleHTTP {
 			if(hr!=null&&hr.bodyText()!=null){
 				t=new Gson().fromJson(hr.bodyText(), c);
 			}
+		}else{
+			logger.info(hr.body());
 		}
 		return t;
 	}

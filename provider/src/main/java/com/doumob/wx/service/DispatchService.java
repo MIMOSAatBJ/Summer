@@ -1,6 +1,6 @@
 package com.doumob.wx.service;
 
-import com.doumob.wx.pojo.Credential;
+import com.doumob.http.SimpleResponse;
 
 /**
  * 调度服务类
@@ -16,7 +16,7 @@ public interface DispatchService {
 	 * @date 2016年12月8日
 	 * @version
 	 */
-	public void register(Credential c);
+	public SimpleResponse takeOrder(String group,String agentId,String userId);
 	
 
 }

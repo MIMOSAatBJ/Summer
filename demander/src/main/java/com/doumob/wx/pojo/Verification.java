@@ -57,5 +57,4 @@ public class Verification extends BaseBean{
 	public void setMsg_signature(String msg_signature) {
 		this.msg_signature = msg_signature;
 	}
-	
 }

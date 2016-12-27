@@ -2,14 +2,21 @@ package com.doumob.wx.pojo;
 
 import com.doumob.annotation.MsgType;
 import com.doumob.base.BaseMessage;
+import com.google.gson.annotations.SerializedName;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 public class WxGzhMessage extends BaseMessage{
 	static final long serialVersionUID = 1L;
+	
+	@SerializedName("receiver")
 	private String ToUserName;//	开发者微信号
+	@SerializedName("source")
 	private String FromUserName;//	发送方帐号（一个OpenID）
+	@SerializedName("timestamp")
 	private String CreateTime;//	消息创建时间 （整型）
+	@SerializedName("msgtype")
 	private String MsgType;//	text
+	@SerializedName("objId")
 	private String MsgId;//	消息id，64位整型
 	public String getToUserName() {
 		return ToUserName;
@@ -47,6 +54,7 @@ public class WxGzhMessage extends BaseMessage{
 	@XStreamAlias("xml")
 	public static class WxText extends WxGzhMessage{
 		private static final long serialVersionUID = 1L;
+		@SerializedName("content")
 		private String Content;//	文本消息内容
 		public String getContent() {
 			return Content;
@@ -61,7 +69,9 @@ public class WxGzhMessage extends BaseMessage{
 	@XStreamAlias("xml")
 	public static class WxImage extends WxGzhMessage{
 		private static final long serialVersionUID = 1L;
+		@SerializedName("url")
 		private String PicUrl;//图片地址
+		@SerializedName("mediaId")
 		private String MediaId;
 		public String getPicUrl() {
 			return PicUrl;
@@ -81,7 +91,9 @@ public class WxGzhMessage extends BaseMessage{
 	@XStreamAlias("xml")
 	public static class WxVoice extends WxGzhMessage{
 		private static final long serialVersionUID = 1L;
+		@SerializedName("mediaId")
 		private String MediaId;
+		@SerializedName("format")
 		private String Format;
 		public String getMediaId() {
 			return MediaId;
@@ -101,7 +113,9 @@ public class WxGzhMessage extends BaseMessage{
 	@XStreamAlias("xml")
 	public static class WxVideo extends WxGzhMessage{
 		private static final long serialVersionUID = 1L;
+		@SerializedName("mediaId")
 		private String MediaId;
+		@SerializedName("thumbMediaId")
 		private String ThumbMediaId;
 		public String getMediaId() {
 			return MediaId;
@@ -121,7 +135,9 @@ public class WxGzhMessage extends BaseMessage{
 	@XStreamAlias("xml")
 	public static class WxShortVideo extends WxGzhMessage{
 		private static final long serialVersionUID = 1L;
+		@SerializedName("mediaId")
 		private String MediaId;
+		@SerializedName("thumbMediaId")
 		private String ThumbMediaId;
 		public String getMediaId() {
 			return MediaId;

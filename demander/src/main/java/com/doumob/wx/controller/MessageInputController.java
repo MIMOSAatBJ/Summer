@@ -60,12 +60,10 @@ public class MessageInputController extends BaseController {
 			HttpServletResponse response,@RequestBody String body){
 		Map<String, String> parms=getparmMap(request);
 		Verification vc=gson.fromJson(gson.toJson(parms), Verification.class);
-		String xml="";
 		if(wxService.validSign(vc)){
-			//TODO 完成消息handle的策略模式
-			xml=wxService.handleMessage(body);
+			wxService.handleMessage(body);
 		}
-		write(response,xml);
+		write(response,success);
 	}
 
 }

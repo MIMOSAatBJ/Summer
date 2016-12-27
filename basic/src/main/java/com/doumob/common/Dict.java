@@ -2,6 +2,48 @@ package com.doumob.common;
 
 public interface Dict {
 	
+	
+	/**
+	 * 服务提供者服务状态
+	 * @author killer
+	 */
+	public static enum ServerState{
+		on(1,"开户"),off(0,"关闭");
+		private ServerState(Integer state, String remark) {
+			this.state = state;
+			this.remark = remark;
+		}
+		private Integer state;
+		private String remark;
+		public Integer getState() {
+			return state;
+		}
+		public String getRemark() {
+			return remark;
+		}
+	}
+	
+	/**
+	 * 服务类型
+	 * @author killer
+	 *
+	 */
+	public static enum ServeType{
+		provider("provider","提供方"),demander("demander","需求方");
+		private ServeType(String type, String remark) {
+			this.type = type;
+			this.remark = remark;
+		}
+		private String type;
+		private String remark;
+		public String getType() {
+			return type;
+		}
+		public String getRemark() {
+			return remark;
+		}
+	}
+	
 	/**
 	 * 微信消息类型
 	 * @author killer
@@ -32,7 +74,8 @@ public interface Dict {
 	 *
 	 */
 	public static enum Table{
-		cache("cache","用于存储有过期时间的数据"),credential("credential","用户凭证");
+		cache("cache","用于存储有过期时间的数据"),credential("credential","用户凭证"),
+		wxqyh("provider.wxqyh","微信企业号"),qyhemp("provider.qyhemp","微信企业号员工列表");
 		private Table(String tableName, String explain) {
 			this.tableName = tableName;
 			this.explain = explain;
@@ -67,7 +110,6 @@ public interface Dict {
 		public String getTip() {
 			return tip;
 		}
-		
 	}
 
 }

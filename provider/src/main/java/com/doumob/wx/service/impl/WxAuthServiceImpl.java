@@ -22,7 +22,10 @@ public class WxAuthServiceImpl implements WxAuthService {
 
 	public String handleMessage(String body) {
 		WxQyhMessage wm = factory.create(body);
-		return HandleContext.proccess(wm);
+		if(wm.getToUserName().equals(Config.getValue("qyh.CorpID"))){
+			return HandleContext.proccess(wm);
+		}
+		return null;
 	}
 
 	public String decrypt(Verification vc) {

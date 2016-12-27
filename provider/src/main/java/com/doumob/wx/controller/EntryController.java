@@ -62,8 +62,7 @@ public class EntryController extends BaseController {
 		String r=authService.decrypt(vc,body);
 		if(r!=null){
 			logger.debug("解密成功!"+r);
-			String result=authService.handleMessage(r);
-			logger.debug(result);
+			authService.handleMessage(r);
 		}
 		else{
 			logger.warn("验证失败，请检查!");

@@ -100,6 +100,4 @@ public class OxmUtil {
 		return text;
 	}
 	
-	public static void main(String[] args) {
-	}
 }

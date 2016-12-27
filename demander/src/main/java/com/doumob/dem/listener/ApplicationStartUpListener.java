@@ -1,4 +1,4 @@
-package com.doumob.start;
+package com.doumob.dem.listener;
 
 import java.util.Map.Entry;
 
@@ -14,7 +14,7 @@ import com.doumob.handle.MessageHandle;
 
 /**
  * 1）实现ApplicationListener重写onApplicationEvent方法
- * 2)实现ServletContextListener通过
+ * 2)实现ServletContextListener
  * @author killer
  *
  */
@@ -36,7 +36,7 @@ public class ApplicationStartUpListener implements ServletContextListener {
 		if (context.getParent() == null) {
 			logger.debug("can do anything you want!");
 			for (Entry<String, MessageHandle> ez : context.getBeansOfType(MessageHandle.class).entrySet()) {
-				HandleContext.registerHandle( ez.getValue());
+				HandleContext.registerHandle(ez.getValue());
 			}
 		}
 		

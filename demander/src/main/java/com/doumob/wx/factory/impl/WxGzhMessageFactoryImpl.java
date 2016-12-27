@@ -32,7 +32,6 @@ public class WxGzhMessageFactoryImpl implements MessageFactory {
 						t.getAnnotation(MsgType.class).value().equalsIgnoreCase(type)
 						&&t.getAnnotation(MsgType.class).eventKey().equalsIgnoreCase(event)){
 				  r=(T)OxmUtil.fromXml(xml, t);
-				  logger.debug(r.getClass().getName());
 				  break;
 				}
 			}

@@ -5,12 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.doumob.common.Dict.Table;
 import com.doumob.factory.MessageFactory;
+import com.doumob.handle.HandleContext;
 import com.doumob.http.SimpleHTTP;
 import com.doumob.mongo.MongoAPI;
 import com.doumob.runtime.Config;
@@ -23,7 +23,7 @@ import com.doumob.wx.service.WxCredentialService;
 @Service
 public class WxCredentialServiceImpl implements WxCredentialService {
 
-	private Logger logger = Logger.getLogger(getClass());
+//	private Logger logger = Logger.getLogger(getClass());
 	@Autowired
 	private MongoAPI mapi;
 
@@ -71,10 +71,10 @@ public class WxCredentialServiceImpl implements WxCredentialService {
 	@Override
 	public String handleMessage(String body) {
 		WxGzhMessage wm = factory.create(body);
-		if (wm != null) {
-
+		if(wm.getToUserName().equals(Config.getValue("AppID"))){
+			return HandleContext.proccess(wm);
 		}
-		logger.debug(wm.toJson());
+		return null;
 		// if (wm instanceof WxText) {
 		// WxText wt=(WxText) wm;
 		// Emp emp=null;
@@ -96,7 +96,6 @@ public class WxCredentialServiceImpl implements WxCredentialService {
 		// }
 		// }
 		// logger.debug(wm.toJson());
-		return "";
 	}
 
 }

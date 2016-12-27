@@ -7,4 +7,5 @@ package com.doumob.base;
  */
 public class BaseMessage extends BaseBean {
 	protected static final long serialVersionUID = 1L;
+	
 }
