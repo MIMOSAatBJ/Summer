@@ -58,8 +58,8 @@ public class MongoConfig {
 	
 	
 	public static List<MongoCredential> getAuth(){
-		MongoCredential credential = MongoCredential.createMongoCRCredential(
-				getOptions("auth_name"),getDBName(),getOptions("auth_pwd").toCharArray());
+		MongoCredential credential = MongoCredential.createCredential(
+				getOptions("auth_name"),"admin",getOptions("auth_pwd").toCharArray());
 		List<MongoCredential> list=new ArrayList<MongoCredential>();
 		list.add(credential);
 		return list;

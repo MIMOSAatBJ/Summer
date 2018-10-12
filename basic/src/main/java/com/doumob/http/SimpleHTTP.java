@@ -1,5 +1,7 @@
 package com.doumob.http;
 
+import java.util.ArrayList;
+
 import org.apache.log4j.Logger;
 import org.springframework.http.MediaType;
 
@@ -110,7 +112,6 @@ public class SimpleHTTP {
 			logger.error("error :" +e.getClass().getName());
 			return null;
 		}
-		
 	}
 	
 }

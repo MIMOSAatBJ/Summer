@@ -33,10 +33,10 @@ public class MongoAPI {
 	 */
 	private MongoAPI() {
 		if (pool == null) {
-			pool = new MongoClient(MongoConfig.getServer(),
-					MongoConfig.getOptions());
-//			 new MongoClient(MongoConfig.getServer(),MongoConfig.getAuth("admin","admin"),
-//			 MongoConfig.getOptions());
+//			pool = new MongoClient(MongoConfig.getServer(),
+//					MongoConfig.getOptions());
+			pool = new MongoClient(MongoConfig.getServer(),MongoConfig.getAuth(),
+			 MongoConfig.getOptions());
 		}
 	}
 
@@ -320,6 +320,12 @@ public class MongoAPI {
 			list.add(t);
 		}
 		return list;
+	}
+	
+	public static void main(String[] args) {
+		MongoAPI api=MongoAPI.getInstance();
+		System.out.println(api.getCollection("cache").count());
+		//enterprize
 	}
 	
 }
